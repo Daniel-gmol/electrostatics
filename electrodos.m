@@ -19,22 +19,22 @@ n = input("Num. partículas: "); % Número de partículas
 
 
 % Matriz/Vector Almacenar Coordenadas/Carga eléctrica por Partícula
-vcor = zeros(n,2);  % [[x1, y1], [x2, y2], [x3, y3]];
-vc = 1:n;
+vCoordenadas = zeros(n,2);  % [[x1, y1], [x2, y2], [x3, y3]];
+vCargas = 1:n;
 
 % Opcional/Pruebas
 for c = 1:1:n
     % Coordenadas de particulas
-    cx = input("x: ");  %Unidades???
-    cy = input("y: ");
-    vcor(c,:) = [cx, cy];
+    x = input("x: ");  %Unidades???
+    y = input("y: ");
+    vCoordenadas(c,:) = [x, y];
     
     % Carga eléctrica de partículas
     carga = input("Carga: ");
-    vc(c) = carga;
+    vCargas(c) = carga;
     
     % Gráficar partículas
-    plot(cx, cy, '.r')
+    plot(x, y, '.r')
     hold on
 end
 axis([0 15 0 12])
@@ -48,16 +48,16 @@ k = 8.99 * 10^9; % Nm^2/C^2
 
 e = 0; % Total campo eléctrico
 for i = 1:n
-    distancia = ((vcor(particulaCampo, 1) - vcor(i, 1))^2 + ...
-    (vcor(particulaCampo, 2) - vcor(i, 2))^2)^(1/2); 
+    distancia = ((vCoordenadas(particulaCampo,1) - vCoordenadas(i,1))^2 ...
+    + (vCoordenadas(particulaCampo, 2) - vCoordenadas(i, 2))^2)^(1/2); 
 
     %{ 
         Agregar Vecotor Unitario para el cálculo correcto;
-        theta = arctan(); 
+        x = 
     %} 
     
     if distancia ~= 0
-        e = e + k * vc(particulaCampo) * vc(i) / distancia^2;  
+        e = e + k * vCargas(particulaCampo) * vCargas(i) / distancia^2;  
         disp(e)
     end
 end
