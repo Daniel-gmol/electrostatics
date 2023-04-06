@@ -1,6 +1,8 @@
-% Graficación de vectores de campo eléctrico
-
 function graficoVectores3(xp, yp, zp, campoElectricoX, campoElectricoY, campoElectricoZ)
+% GRAFICOVECTORES3 Graficación de vectores 3D de campo eléctrico
+% Para cada campo eléctrico que generan las partículas presentes en el
+% sistema, se dibuja en 3 dimensiones el vector del campo eléctrico
+% en la prueba de carga o en una partícula existente.
 
 % Cambio vectores filas a vectores columnas en Matriz Repetida
 xp = xp(:);
@@ -15,7 +17,7 @@ campoZCol = campoElectricoZ(:);
 % Creación de tabla de campoElectrico en X - Y
 tablaCampoXYZ = table(campoXCol, campoYCol, campoZCol);
 
-
+% Explicación de Proceso de Graficación
 %{ 
 La graficación de vectores se divide en 2 partes
 
@@ -31,8 +33,8 @@ no se graficaron.
 
 % Graficación Vectores Campo eléctrico Únicos
 
-% Documentación de unique
 %{
+% Documentación de unique
 [C,ia,ic] = unique(___) also returns index vectors ia and ic using any 
 of the previous syntaxes.
 
@@ -64,6 +66,7 @@ quiver3(xp(1:cantUnicos), yp(1:cantUnicos), zp(1:cantUnicos),...
 % Contar valores que se repiten 
 contarReps = accumarray(ic,1);
 
+% Explicación de porque gráficar por separado
 %{
 Para DISTINGUIR y poder OBSERVAR los VECTORES REPETIDOS,
 se cambiara su TAMAÑO APARENTE en la GRAFICA, de manera que
@@ -81,10 +84,9 @@ for i = 1:cantUnicos
                     k, 'color', '#77AC30'); hold on
        
             k = k + 0.01;   % Se aumenta el factor de tamaño del vector
+
        end
    end
 end  
-
-axis equal % Ajuste nuevo de ejes según vectores /// ¿seguro que es necesario? Verificar
-
+axis equal % Ajuste nuevo de ejes según vectores /// ¿seguro que es necesario? VERIFICAR
 end

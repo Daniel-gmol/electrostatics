@@ -1,5 +1,8 @@
-% Cálculo vectorial de campo eléctrico por partícula
 function [campoElectricoX,campoElectricoY, campoElectricoZ] = campoElectrico(vCoordenadas, vCargas, particulaCampo, n)
+% CAMPOELECTRICO Cálculo vectorial del campo eléctrico por cada partícula
+% Por cada partícula que genera un cmapo eléctrico, se calculan las 
+% componenetes X, Y, o Z, del campo sobre una prueba de carga
+% o partícula existnete
 
 % Constante k
 k = 8.99 * 10^9; % Nm^2/C^2
@@ -17,42 +20,32 @@ for i = 1:n
 
     if distancia ~= 0
         % Vector Unitario r;
-        componenteX = (vCoordenadas(i,1) ...
-                       - vCoordenadas(particulaCampo,1)) / distancia;
+        componenteX = (vCoordenadas(i,1) - vCoordenadas(particulaCampo,1)) / distancia;
 
-        componenteY = (vCoordenadas(i,2) ...
-                       - vCoordenadas(particulaCampo,2)) / distancia;
+        componenteY = (vCoordenadas(i,2) - vCoordenadas(particulaCampo,2)) / distancia;
         
-        componenteZ = (vCoordenadas(i,3) ...
-                       - vCoordenadas(particulaCampo,3)) / distancia;
-  
-        % E = k * q / r^2 * vector unitario
-        % Si las cargas son iguales el campo es inverso al vector unitario
-        if vCargas(i) > 0 && vCargas(particulaCampo) > 0 ...
-           || vCargas(i) < 0 && vCargas(particulaCampo) < 0
-            
-            campoElectricoX(i) = - k * abs(vCargas(i)) ...
-                                    / distancia^2 * componenteX;
+        componenteZ = (vCoordenadas(i,3) - vCoordenadas(particulaCampo,3)) / distancia;
+                     
+        if vCargas(i) > 0 && vCargas(particulaCampo) > 0 || ...
+           vCargas(i) < 0 && vCargas(particulaCampo) < 0
+            % E = k * q / r^2 * vector unitario
+            % Si las cargas son iguales el campo es inverso al vector unitario
+            campoElectricoX(i) = - (k * abs(vCargas(i)) / distancia^2) * componenteX;
 
-            campoElectricoY(i) =  - k * abs(vCargas(i)) ...
-                                    / distancia^2 * componenteY;
+            campoElectricoY(i) =  - (k * abs(vCargas(i)) / distancia^2) * componenteY;
                                 
-            campoElectricoZ(i) =  - k * abs(vCargas(i)) ...
-                                    / distancia^2 * componenteZ;
-        % Si son diferentes, campo va en misma direcicón al vector unitario    
+            campoElectricoZ(i) =  - (k * abs(vCargas(i)) / distancia^2) * componenteZ;                                
         else
-            campoElectricoX(i) =  k * abs(vCargas(i))...
-                                    / distancia^2 * componenteX;
+            % Si son diferentes, campo va en misma direcicón al vector unitario 
+            campoElectricoX(i) =  (k * abs(vCargas(i)) / distancia^2) * componenteX;
 
-            campoElectricoY(i) =   k * abs(vCargas(i)) ...
-                                       / distancia^2 * componenteY;
+            campoElectricoY(i) =   (k * abs(vCargas(i)) / distancia^2) * componenteY;
                                    
-            campoElectricoZ(i) =   k * abs(vCargas(i)) ...
-                                       / distancia^2 * componenteZ;
+            campoElectricoZ(i) =   (k * abs(vCargas(i)) / distancia^2) * componenteZ;                             
         end
-        
-    % Si la distancia es 0, campoElectrico = indefnidio = 0
+  
     else
+        % Si la distancia es 0, campoElectrico = indefnidio = 0
         campoElectricoX(i) =  0;
         campoElectricoY(i) = 0;
         campoElectricoZ(i) = 0;
