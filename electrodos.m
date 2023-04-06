@@ -53,19 +53,53 @@ n = length(vCoordenadas);
 %}
 
 % Prueba compleja
-
 % Agregrar unidades
-vCoordenadas = [[2,1;2,2;2,3;2,4;2,5;2,6;2,7;2,8;2,9;2,10;2,11];...
-               [4,1;4,2;4,3;4,4;4,5;4,6;4,7;4,8;4,9;4,10;4,11]];
+vCoordenadas = [[2,1;
+                 2,2;
+                 2,3];
+               
+               [4,1;
+                4,2;
+                4,3;]];
+            
 % Agregrar unidades
-vCargas = [[1.6022e-9;1.6022e-19;1.6022e-19;1.6022e-9;1.6022e-9;...
-            1.6022e-9;1.6022e-9;1.6022e-9;1.6022e-9;1.6022e-9;1.6022e-9],...
-           [-1.6022e-9;-1.6022e-9;-1.6022e-9;-1.6022e-9;-1.6022e-9;
-            -1.6022e-9;-1.6022e-9;-1.6022e-9;-1.6022e-9;-1.6022e-9;-1.6022e-9]];
+vCargas = [1.6022e-9;1.6022e-9;1.6022e-9;
+           -1.6022e-9;-1.6022e-9;-1.6022e-9;];
 
 % Cantidad de partículas        
 n = length(vCoordenadas);
-        
+
+
+% Partícula en donde se halla/cualcula el campo eléctrico
+
+% Preguntar si se Calcula para Particula de Prueba o Particula Existente
+particulaPrueba = input("Particula existente (E) o de prueba (P): ", "s");
+
+if particulaPrueba == "P"
+    
+    % Coordenada partícula de prueba en donde se calcula Campo Eléctrico
+    coordenadaCampoX = input("Coordenada X: ");
+    coordenadaCampoY = input("Coordenada Y: ");
+    
+    % Almacenamiento de coordenadas de particula prueba
+    % en arreglo de coordenadas de partpículas existentes
+    vCoordenadas(end + 1, 1) = coordenadaCampoX;
+    vCoordenadas(end, 2) = coordenadaCampoY;
+    
+    % Añadir carga de prueba a vector de cargas
+    vCargas(end + 1, 1) = 1;
+    
+    % Aumentar número de partículas/ se agrega la de prueba
+    n = n + 1;
+    
+    % Partícula en que se evalua el campo es la última en el arreglo
+    % Posición n
+    particulaCampo = n;
+else
+    % Particula en dodne se calculará el campo eléctrico
+    particulaCampo = input("Particula a calcular campo E: ");
+end
+
         
 % Plot de las coordenadas de las partículas en 2D según la carga
 for i = 1:n
@@ -79,22 +113,22 @@ for i = 1:n
        hold on
    end
 end
-axis([-5 12 -5 12]) % Limita ejes del plot
+axis equal  % Limita ejes del plot
+% PRUEBA DE EJES: axis([-5 12 -5 12])
 
-
-% Partícula en donde se halla/cualcula el campo eléctrico
-% ¿Pordía tal vez cambiarse partícula por coordenadas en donde se busca
-% calcular el campo eléctrico?
-particulaCampo = input("Particula a calcular campo E: ");
 
 % Función campo Eléctrico
 [campoElectricoX,campoElectricoY] = campoElectrico(vCoordenadas, vCargas, particulaCampo, n);
 
-% Plot vectores campo eléctrico en la partícula
+
+% Graficación vectores campo eléctrico en la partícula
+
+% Creación de matriz repitiendo coordenada X - Y en donde inicia el vector
 xp = repmat(vCoordenadas(particulaCampo,1), 1, n);
 yp = repmat(vCoordenadas(particulaCampo,2), 1, n);
-quiver(xp, yp, campoElectricoX, campoElectricoY); hold on
 
-% Claculo magnitud de cmapo eléctrico
+graficoVectores(xp, yp, campoElectricoX, campoElectricoY);
+
+% Calculo magnitud de campo eléctrico
 magnitudCampoE = ((sum(campoElectricoX))^2 + ...
                   (sum(campoElectricoY))^2)^(1/2);
