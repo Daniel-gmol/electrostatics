@@ -1,4 +1,4 @@
-
+% Cálculo vectorial de campo eléctrico por partícula
 function [campoElectricoX,campoElectricoY] = campoElectrico(vCoordenadas, vCargas, particulaCampo, n)
 
 % Constante k
