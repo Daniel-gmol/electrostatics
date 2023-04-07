@@ -73,7 +73,7 @@ se cambiara su TAMAÑO APARENTE en la GRAFICA, de manera que
 se VERAN MÁS GRANDES, de lo que en verdad son.
 %}
 
-k = 0.92; % Factor de Tamaño de Vector
+t = 0.92; % Factor de Tamaño de Vector
 for i = 1:cantUnicos
    if contarReps(i) > 1
        % Para cada VECTOR REPETIDO
@@ -81,9 +81,9 @@ for i = 1:cantUnicos
            % Plot de Vectores Repetidos
             quiver3(xp(1), yp(1), zp(1), ...
                     tablaUnicos.campoXCol(i), tablaUnicos.campoYCol(i), tablaUnicos.campoZCol(i),...
-                    k, 'color', '#77AC30'); hold on
+                    t, 'color', '#77AC30'); hold on
        
-            k = k + 0.01;   % Se aumenta el factor de tamaño del vector
+            t = t + 0.01;   % Se aumenta el factor de tamaño del vector
 
        end
    end
