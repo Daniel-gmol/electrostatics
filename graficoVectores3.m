@@ -1,19 +1,21 @@
-function graficoVectores(xp, yp, campoElectricoX, campoElectricoY)
-% GRAFICOVECTORES Graficación de vectores 2D de campo eléctrico
+function graficoVectores3(xp, yp, zp, campoElectricoX, campoElectricoY, campoElectricoZ)
+% GRAFICOVECTORES3 Graficación de vectores 3D de campo eléctrico
 % Para cada campo eléctrico que generan las partículas presentes en el
-% sistema, se dibuja en 2 dimensiones el vector del campo eléctrico
+% sistema, se dibuja en 3 dimensiones el vector del campo eléctrico
 % en la prueba de carga o en una partícula existente.
 
 % Cambio vectores filas a vectores columnas en Matriz Repetida
 xp = xp(:);
 yp = yp(:);
+zp = zp(:);
 
 % Cambio vectores filas a vectores columnas en matrices de campoElectricoXY 
 campoXCol = campoElectricoX(:);
 campoYCol = campoElectricoY(:);
+campoZCol = campoElectricoZ(:);
 
 % Creación de tabla de campoElectrico en X - Y
-tablaCampoXY = table(campoXCol, campoYCol);
+tablaCampoXYZ = table(campoXCol, campoYCol, campoZCol);
 
 % Explicación de Proceso de Graficación
 %{ 
@@ -32,7 +34,7 @@ no se graficaron.
 % Graficación Vectores Campo eléctrico Únicos
 
 %{
-%Documentación de unique
+% Documentación de unique
 [C,ia,ic] = unique(___) also returns index vectors ia and ic using any 
 of the previous syntaxes.
 
@@ -47,18 +49,18 @@ PUEDE BORRARSE AL FINAL
 %}
 
 % Hallar valores X, Y, únicos (NO se repiten)
-[tablaUnicos, ~, ic] = unique(tablaCampoXY);
+[tablaUnicos, ~, ic] = unique(tablaCampoXYZ);
 
 % Cantidad de valores X-Y de campo Eléctrico Únicos
 cantUnicos = length(tablaUnicos.campoXCol);
 
 % Plot de Vectores únicos
-quiver(xp(1:cantUnicos), yp(1:cantUnicos), ...
-       tablaUnicos.campoXCol, tablaUnicos.campoYCol,...
+quiver3(xp(1:cantUnicos), yp(1:cantUnicos), zp(1:cantUnicos),...
+       tablaUnicos.campoXCol, tablaUnicos.campoYCol, tablaUnicos.campoZCol, ...
        'color', '#ffc000');
        hold on
 
-
+  
 % Graficación Vectores campo Eléctrico Repetidos
 
 % Contar valores que se repiten 
@@ -77,8 +79,9 @@ for i = 1:cantUnicos
        % Para cada VECTOR REPETIDO
        for r = 1:contarReps(i)-1
            % Plot de Vectores Repetidos
-            quiver(xp(1), yp(1), tablaUnicos.campoXCol(i), tablaUnicos.campoYCol(i), ...
-                  k, 'color', '#77AC30'); hold on
+            quiver3(xp(1), yp(1), zp(1), ...
+                    tablaUnicos.campoXCol(i), tablaUnicos.campoYCol(i), tablaUnicos.campoZCol(i),...
+                    k, 'color', '#77AC30'); hold on
        
             k = k + 0.01;   % Se aumenta el factor de tamaño del vector
 
