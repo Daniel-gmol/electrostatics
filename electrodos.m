@@ -16,65 +16,19 @@
 clc
 clear
 
+% 1. Ingresar/Cargar Coordenadas y Carga eléctrica de cada partícula
 
-%Ingresar cantidad, coordenadas, y carga para cada partícula
-%{
-n = input("Num. partículas: "); % Número de partículas
-
-% Matriz/Vector Almacenar Coordenadas/Carga eléctrica por Partícula
-vCoordenadas = zeros(n,2);   [[x1, y1], [x2, y2], [x3, y3]];
-vCargas = 1:n;
-
-for c = 1:1:n
-      % Coordenadas de particulas
-      x = input("x: ");  %Unidades???
-      y = input("y: ");
-      vCoordenadas(c,:) = [x, y];
-
-      % Carga eléctrica de partículas
-      carga = input("Carga: ");
-      vCargas(c) = carga;
-
-      % Gráficar partículas
-      plot(x, y, '.r')
-      hold on
-end
-%}
+prueba = input("Tipo de prueba: ");
+[n, vCoordenadas, vCargas] = tipoPrueba(prueba);
 
 
-% Directamente crear coordenadas y cargas eléctricas
-% Prueba simple
-%{ 
-vCoordenadas = [1,2; -2,3; 7,10; 4, 8];
-vCargas = [-5 * 10^-9, 7 * 10^-9, 12 * 10 ^ -9, -7 * 10^-9];
-n = length(vCoordenadas);
-%}
-
-
-% Prueba
-
-vCoordenadas = [[2,1,0;
-                 2,2,0;
-                 2,3,0];
-               
-               [4,1,0;
-                4,2,0;
-                4,3,0;]]; % Agregrar unidades
-
-vCargas = [1.6022e-9;1.6022e-9;1.6022e-9;
-           -1.6022e-9;-1.6022e-9;-1.6022e-9;]; % Agregrar unidades
-
-% Cantidad de partículas        
-n = length(vCoordenadas);
-
-% Dimension
-dimension = 2;
+% 2. Calculos y gráficos de campo Eléctrico
 
 % Preguntar si se Calcula para Particula de Prueba o Particula Existente
 particulaPrueba = input("Particula existente (E) o de prueba (P): ", "s");
 
 % Coordenadas en donde se halla/cualcula el campo eléctrico de partícual de prueba
-if particulaPrueba == "P"
+if particulaPrueba == "P" || particulaPrueba == "p"
     % Coordenada partícula de prueba en donde se calcula Campo Eléctrico
     coordenadaCampoX = input("Coordenada X: ");
     coordenadaCampoY = input("Coordenada Y: ");
@@ -84,7 +38,7 @@ if particulaPrueba == "P"
     vCoordenadas(end, 2) = coordenadaCampoY;
     
     % Añadir carga de prueba a vector de cargas q = 1
-    vCargas(end + 1, 1) = 1;
+    vCargas(end + 1) = 1;
     
     % Aumentar número de partículas/ se agrega la de prueba
     n = n + 1;
@@ -98,11 +52,11 @@ end
 
 
 % Graficación de partículas
-graficoCoordenadas(vCoordenadas, vCargas, n, dimension)
+graficoCoordenadas(vCoordenadas, vCargas, n, 2)
 
 
 % Calculo vectorial campo Eléctrico (X, Y)
-[campoElectricoX,campoElectricoY, ~] = campoElectrico(vCoordenadas, vCargas, particulaCampo, n);
+[campoElectricoX,campoElectricoY, campoElectricoZ] = campoElectrico(vCoordenadas, vCargas, particulaCampo, n);
 
 
 % Graficación vectores campo eléctrico en la partícula
@@ -116,12 +70,14 @@ graficoVectores(xp, yp, campoElectricoX, campoElectricoY);
 
 
 % Calculo magnitud de campo eléctrico
-magnitudCampoE = ((sum(campoElectricoX))^2 + ...
-                  (sum(campoElectricoY))^2)^(1/2);
+[magnitudCampoE, Ex_num, Ey_num, ~] = magnitudCampo(campoElectricoX, campoElectricoY, campoElectricoZ);
               
 disp("Magnitud campo eléctrico en (" + ...
     vCoordenadas(particulaCampo,1) + ", " + vCoordenadas(particulaCampo,2) ...
     + "): " + magnitudCampoE) % Agregar unidades?
+
+% Vector resultante graficado
+quiver(xp(1), yp(1), Ex_num, Ey_num, 'color', 'k')
 
 
 
@@ -130,31 +86,21 @@ disp("Magnitud campo eléctrico en (" + ...
 %% 3D
 
 clc
+clear
 
-% Prueba
+% 1. Cargar Coordenadas y Carga eléctrica de cada partícula
 
-vCoordenadas = [[2,2,1;
-                 2,2,2;
-                 2,2,3];
-               
-               [4,4,1;
-                4,4,2;
-                4,4,3;]]; % Agregrar unidades
-            
-vCargas = [1.6022e-9;1.6022e-9;1.6022e-9;
-           -1.6022e-9;-1.6022e-9;-1.6022e-9;]; % Agregrar unidades
+prueba = input("Tipo de prueba: ");
+[n, vCoordenadas, vCargas] = tipoPrueba3(prueba);
 
-% Cantidad de partículas        
-n = length(vCoordenadas);
 
-% Dimension
-dimension = 3;
+% 2. Calcular y gráficar campo eléctrico
 
 % Preguntar si se Calcula para Particula de Prueba o Particula Existente
 particulaPrueba = input("Particula existente (E) o de prueba (P): ", "s");
 
 % Coordenadas en donde se halla/cualcula el campo eléctrico de partícual de prueba
-if particulaPrueba == "P"
+if particulaPrueba == "P" || particulaPrueba == "p"
     % Coordenada partícula de prueba en donde se calcula Campo Eléctrico
     coordenadaCampoX = input("Coordenada X: ");
     coordenadaCampoY = input("Coordenada Y: ");
@@ -166,7 +112,7 @@ if particulaPrueba == "P"
     vCoordenadas(end, 3) = coordenadaCampoZ;
     
     % Añadir carga de prueba a vector de cargas q = 1
-    vCargas(end + 1, 1) = 1;
+    vCargas(end + 1) = 1;
     
     % Aumentar número de partículas / se agrega la partícula de prueba
     n = n + 1;
@@ -180,7 +126,7 @@ end
 
 
 % Graficación de partículas
-graficoCoordenadas(vCoordenadas, vCargas, n, dimension)
+graficoCoordenadas(vCoordenadas, vCargas, n, 3)
 
 
 % Calculo vectorial campo Eléctrico (X, Y, Z)
@@ -199,13 +145,14 @@ graficoVectores3(xp, yp, zp, campoElectricoX, campoElectricoY, campoElectricoZ);
 
 
 % Calculo magnitud de campo eléctrico
-magnitudCampoE = ((sum(campoElectricoX))^2  + ...
-                  (sum(campoElectricoY))^2  + ...
-                  (sum(campoElectricoZ))^2) ^ (1/2);
+[magnitudCampoE, Ex_num, Ey_num, Ez_num] = magnitudCampo(campoElectricoX, campoElectricoY, campoElectricoZ);
 
 disp("Magnitud campo eléctrico en (" + ...
     vCoordenadas(particulaCampo,1) + ", " + vCoordenadas(particulaCampo,2) + ", " + vCoordenadas(particulaCampo, 3) ...
     + "): " + magnitudCampoE) % Agregar unidades?
+
+% Vector resultante graficado
+quiver3(xp(1), yp(1), zp(1), Ex_num, Ey_num, Ez_num, 'color', 'k')
 
 
 
