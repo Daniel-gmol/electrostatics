@@ -1,4 +1,4 @@
-function [n, vCoordenadas, vCargas] = tipoPrueba3(prueba)
+function [n, vCoordenadas, vCargas, xq, yq, zq] = tipoPrueba3(prueba)
 %TIPOPRUEBA3 Prueba de cargas para calcular el campo eléctrico en 3D
 %   Según el valor ingresado de tipo de prueba (Un número entero)
 %   se realizara algún tipo de test, es decir, se colocaran cargas
@@ -23,12 +23,17 @@ if prueba == 1
     % Cantidad de partículas        
     n = length(vCoordenadas);    
     
+    % área campo
+    [xq, yq, zq] = area(vCoordenadas);
+    
+    
+    
+    
+    
+    
     
 elseif prueba == 2
     % 1.12 Prueba anillo simple
-
-    clc
-    clear
 
     vCoordenadas = [0 0 2.5; 1.5 0 1.5; 2.5 0 0; 1.5 0 -1.5; 0 0 -2.5; -1.5 0 -1.5; -2.5 0 0; -1.5 0 1.5];
 
@@ -37,6 +42,13 @@ elseif prueba == 2
 
     % Cargas según cantidad
     vCargas = repmat(1.6022e-9, 1, n);    
+    
+    % área campo
+    [xq, yq, zq] = area(vCoordenadas);
+    
+    
+    
+    
     
     
 elseif prueba == 3
@@ -71,6 +83,9 @@ elseif prueba == 3
     % Cargas según cantidad
     vCargas = repmat(1.6022e-9, 1, n);
 
+    
+    % área campo
+    [xq, yq, zq] = area(vCoordenadas);
     
 else
     disp("Actualmente solo hay 3 pruebas escriba '1', '2', '3'")

@@ -90,14 +90,14 @@ else
 
                     campoElectricoY(i-n) = campoElectricoY(i-n) + ( - (k * abs(vCargas(j)) / distancia^2) * componenteY);
 
-                    campoElectricoZ(i-n) = campoElectricoY(i-n) + (- (k * abs(vCargas(j)) / distancia^2) * componenteZ);                                
+                    campoElectricoZ(i-n) = campoElectricoZ(i-n) + (- (k * abs(vCargas(j)) / distancia^2) * componenteZ);                                
                 else
                     % Si son diferentes, campo va en misma direcicón al vector unitario 
                     campoElectricoX(i-n) =  campoElectricoX(i-n) + ((k * abs(vCargas(j)) / distancia^2) * componenteX);
 
                     campoElectricoY(i-n) =   campoElectricoY(i-n) + ((k * abs(vCargas(j)) / distancia^2) * componenteY);
 
-                    campoElectricoZ(i-n) =   campoElectricoY(i-n) + ((k * abs(vCargas(j)) / distancia^2) * componenteZ);                             
+                    campoElectricoZ(i-n) =   campoElectricoZ(i-n) + ((k * abs(vCargas(j)) / distancia^2) * componenteZ);                             
                 end
 
             else
