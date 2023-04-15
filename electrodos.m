@@ -1,5 +1,8 @@
 % Modelación de sistemas eléctricos
 
+clc
+clear
+
 %{
   Equipo:
     n
@@ -14,21 +17,21 @@
 %% 2D
 
 clc
-clear
 
 % 1. Ingresar/Cargar Coordenadas y Carga eléctrica de cada partícula
 
 prueba = input("Tipo de prueba: ");
-[n, vCoordenadas, vCargas] = tipoPrueba(prueba);
+[n, vCoordenadas, vCargas, xq, yq, zq] = tipoPrueba(prueba);
 
 
 % 2. Calculos y gráficos de campo Eléctrico
 
 % Preguntar si se Calcula para Particula de Prueba o Particula Existente
-particulaPrueba = input("Particula existente (E) o de prueba (P): ", "s");
+% O para todo el campo (Un área en específico)
+lugarCampo = input("Existente(E) Carga Prueba (P) Área (A): ", "s");
 
 % Coordenadas en donde se halla/cualcula el campo eléctrico de partícual de prueba
-if particulaPrueba == "P" || particulaPrueba == "p"
+if lugarCampo == "P" || lugarCampo == "p"
     % Coordenada partícula de prueba en donde se calcula Campo Eléctrico
     coordenadaCampoX = input("Coordenada X: ");
     coordenadaCampoY = input("Coordenada Y: ");
@@ -45,40 +48,69 @@ if particulaPrueba == "P" || particulaPrueba == "p"
     
     % Partícula en que se evalua el campo es la última en el arreglo (Posición: n)
     particulaCampo = n;
+    
+    % Calculo vectorial campo Eléctrico (X, Y)
+    [campoElectricoX,campoElectricoY, campoElectricoZ] = campoElectrico(vCoordenadas, vCargas, particulaCampo, n);
+    
+elseif lugarCampo == "A" || lugarCampo == "a"
+    % Área de campo eléctrico en donde se graficarán los vectores del campo
+    B = reshape([xq(:) yq(:) zq(:)], [], 3);
+    
+    % Tamaño de vectores de campoElectricoX, Y, Z
+    a = length(B);
+    
+    % Se agrega las coordenadas del área a vCoordenadas donde están las 
+    % partículas fijas
+    vCoordenadas = [vCoordenadas; B];
+
+    particulaCampo = 0;
+    [campoElectricoX,campoElectricoY, campoElectricoZ] = campoElectrico(vCoordenadas, vCargas, particulaCampo, n, a);
+      
 else
     % Particula en donde se calculará el campo eléctrico si NO es partícula de prueba
     particulaCampo = input("Particula a calcular campo E: ");
+    
+    % Calculo vectorial campo Eléctrico (X, Y)
+    [campoElectricoX,campoElectricoY, campoElectricoZ] = campoElectrico(vCoordenadas, vCargas, particulaCampo, n);
 end
-
-
-% Graficación de partículas
-graficoCoordenadas(vCoordenadas, vCargas, n, 2)
-
-
-% Calculo vectorial campo Eléctrico (X, Y)
-[campoElectricoX,campoElectricoY, campoElectricoZ] = campoElectrico(vCoordenadas, vCargas, particulaCampo, n);
-
-
-% Graficación vectores campo eléctrico en la partícula
-
-% Creación de matriz repitiendo coordenada X - Y en donde inicia el vector
-xp = repmat(vCoordenadas(particulaCampo,1), 1, n);
-yp = repmat(vCoordenadas(particulaCampo,2), 1, n);
-
-% Función graficadora de vectores de campo eléctrico
-graficoVectores(xp, yp, campoElectricoX, campoElectricoY);
 
 
 % Calculo magnitud de campo eléctrico
 [magnitudCampoE, Ex_num, Ey_num, ~] = magnitudCampo(campoElectricoX, campoElectricoY, campoElectricoZ);
-              
+
+
+% Graficación de partículas
+graficoCoordenadas(vCoordenadas, vCargas, n, 2)
+axis equal
+
+
+% Graficación vectores campo eléctrico en la partícula
+
+if particulaCampo == 0
+    xp = B(:,1);
+    yp = B(:,2);
+    
+    colX = campoElectricoX(:);
+    colY = campoElectricoY(:);
+    
+    quiver(xp, yp, colX, colY, 2, 'color', 'g')
+    %graficoCampoVectores(xp, yp, colX, colY)   
+else
+    % Creación de matriz repitiendo coordenada X - Y en donde inicia el vector
+    xp = repmat(vCoordenadas(particulaCampo,1), 1, n);
+    yp = repmat(vCoordenadas(particulaCampo,2), 1, n);
+    
+    % Función graficadora de vectores de campo eléctrico
+    graficoVectores(xp, yp, campoElectricoX, campoElectricoY);
+    
+    % Vector resultante
+    quiver(median(xp), median(yp), Ex_num, Ey_num, 'color', 'k')
+end
+
+
 disp("Magnitud campo eléctrico en (" + ...
-    vCoordenadas(particulaCampo,1) + ", " + vCoordenadas(particulaCampo,2) ...
+    median(xp) + ", " + median(yp) ...
     + "): " + magnitudCampoE) % Agregar unidades?
-
-% Vector resultante graficado
-quiver(xp(1), yp(1), Ex_num, Ey_num, 'color', 'k')
-
 
 
 
@@ -86,7 +118,6 @@ quiver(xp(1), yp(1), Ex_num, Ey_num, 'color', 'k')
 %% 3D
 
 clc
-clear
 
 % 1. Cargar Coordenadas y Carga eléctrica de cada partícula
 
@@ -97,10 +128,11 @@ prueba = input("Tipo de prueba: ");
 % 2. Calcular y gráficar campo eléctrico
 
 % Preguntar si se Calcula para Particula de Prueba o Particula Existente
-particulaPrueba = input("Particula existente (E) o de prueba (P): ", "s");
+% o para todo el campo (área)
+lugarCampo = input("Particula existente (E) o de prueba (P): ", "s");
 
 % Coordenadas en donde se halla/cualcula el campo eléctrico de partícual de prueba
-if particulaPrueba == "P" || particulaPrueba == "p"
+if lugarCampo == "P" || lugarCampo == "p"
     % Coordenada partícula de prueba en donde se calcula Campo Eléctrico
     coordenadaCampoX = input("Coordenada X: ");
     coordenadaCampoY = input("Coordenada Y: ");
