@@ -6,7 +6,7 @@ function [xq, yq, zq] = area(vCoordenadas)
                      min(vCoordenadas(:,3)):0.1:max(vCoordenadas(:,3)));
  if isempty(xq) && isempty(xq) && isempty(xq)
     [X, Y, Z] = sphere();
-    r = 10;
+    r = 5;
     xq = X * r;
     yq = Y * r;
     zq = Z * r;

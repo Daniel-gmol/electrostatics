@@ -103,6 +103,46 @@ elseif prueba == 4
 
     % área acotada por partículas
     [xq, yq, zq] = area(vCoordenadas);
+
+elseif prueba == 5
+    % 1.5 Prueba dos barras 2D
+
+x1 = input("Coordenada X barra 1: ");
+y1 = input("Y inferior: ");
+y2 = input("Y superior: ");
+
+x2 = input("Coordenada X barra 2: ");
+y3 = input("Y inferior: ");
+y4 = input("Y superior: ");
+
+
+n1 =  input("Numero de cargas para barra 1: ");
+n2 =  round((n1 / (y2 - y1)) * ((y4 - y3)));
+yb1 = linspace(y1, y2, n1);
+yb2 = linspace(y3, y4, n2);
+z = 0;
+
+% Prealocando vector coordenadas
+vCoordenadas = zeros(n1 + n2, 3);
+
+for i = 1:n1
+    A = [x1, yb1(i), z];
+    vCoordenadas(i,:) = A;
+end
+
+for i = 1:n2
+    B = [x2, yb2(i), z];
+    vCoordenadas(n1 + i,:) = B;
+end
+
+% Vector Columna de cargas eléctricas
+vCargas = [repmat(1.6022e-9, n1, 1); repmat(-1.6022e-9, n2, 1)]; % Agregar unidades
+
+% Numero de coordenadas ajustado
+n = length(vCoordenadas);
+
+% área acotada por partículas
+[xq, yq, zq] = area(vCoordenadas);
     
 else
     disp("Actualmente solo hay 4 pruebas escriba '1', '2', '3', '4'")

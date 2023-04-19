@@ -226,4 +226,8 @@ disp("Magnitud campo eléctrico en (" + ...
     + "): " + magnitudCampoE) % Agregar unidades?
 
 
+%%
+
+% Permitir al usario cambiar el tamaño de cada placa
+% Gráficar/Imprimir componentes de campo eléctrico Neto 
 
