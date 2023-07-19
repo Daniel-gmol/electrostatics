@@ -50,7 +50,8 @@ if lugarCampo == "P" || lugarCampo == "p"
     particulaCampo = n;
     
     % Calculo vectorial campo Eléctrico (X, Y)
-    [campoElectricoX,campoElectricoY, campoElectricoZ] = campoElectrico(vCoordenadas, vCargas, particulaCampo, n);
+    [campoElectricoX,campoElectricoY, campoElectricoZ] = ...
+    campoElectrico(vCoordenadas, vCargas, particulaCampo, n);
     
 elseif lugarCampo == "A" || lugarCampo == "a"
     % Área de campo eléctrico en donde se graficarán los vectores del campo
@@ -64,20 +65,23 @@ elseif lugarCampo == "A" || lugarCampo == "a"
     vCoordenadas = [vCoordenadas; B];
 
     particulaCampo = 0;
-    [campoElectricoX,campoElectricoY, campoElectricoZ] = campoElectrico(vCoordenadas, vCargas, particulaCampo, n, a);
+    [campoElectricoX,campoElectricoY, campoElectricoZ] = ...
+    campoElectrico(vCoordenadas, vCargas, particulaCampo, n, a);
       
 else
     % Particula en donde se calculará el campo eléctrico si NO es partícula de prueba
     particulaCampo = input("Particula a calcular campo E: ");
     
     % Calculo vectorial campo Eléctrico (X, Y)
-    [campoElectricoX,campoElectricoY, campoElectricoZ] = campoElectrico(vCoordenadas, vCargas, particulaCampo, n);
+    [campoElectricoX,campoElectricoY, campoElectricoZ] = ...
+    campoElectrico(vCoordenadas, vCargas, particulaCampo, n);
 end
 
 
 
 % Calculo magnitud de campo eléctrico
-[magnitudCampoE, Ex_num, Ey_num, ~] = magnitudCampo(campoElectricoX, campoElectricoY, campoElectricoZ);
+[magnitudCampoE, Ex_num, Ey_num, ~] = ...
+magnitudCampo(campoElectricoX, campoElectricoY, campoElectricoZ);
 
 
 % Graficación de partículas
@@ -94,7 +98,7 @@ if particulaCampo == 0
     colX = campoElectricoX(:);
     colY = campoElectricoY(:);
     
-    quiver(xp, yp, colX, colY, 2, 'color', 'g')
+    quiver(xp, yp, colX, colY, 2, 'LineWidth', 5, 'color', 'g')
     %graficoCampoVectores(xp, yp, colX, colY)   
 else
     % Creación de matriz repitiendo coordenada X - Y en donde inicia el vector
@@ -224,10 +228,5 @@ end
 disp("Magnitud campo eléctrico en (" + ...
     median(xp) + ", " + median(yp) + "," + median(zp) ...
     + "): " + magnitudCampoE) % Agregar unidades?
-
-
-%%
-
-% Permitir al usario cambiar el tamaño de cada placa
-% Gráficar/Imprimir componentes de campo eléctrico Neto 
+ 
 
